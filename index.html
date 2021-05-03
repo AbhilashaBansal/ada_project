@@ -25,8 +25,26 @@
             <div class="col-sm-3" style="z-index: 5; position: absolute; right: 10px; top: 20px; background-color: ivory;">
                 <h6>RESEARCH POTENTIALS</h6>
                 <ul id="res-pot">
-                    <li>A: 500</li>
+                    <!-- <li>A: 500</li> -->
                 </ul>
+                <h6>EDGES</h6>
+                <ul id="edge-ul">
+                    <!-- <li>A, B, 100</li> -->
+                </ul>
+                <div>
+                    <img src="./images/plus.jpeg" alt="add an edge" width="25px" id="icon">
+                </div>
+
+                <h6 style="display: inline-block;">Source Vertex: </h6>
+                <div style="display: inline-block;"><select name="srcv" id="srcv"></select></div>
+                <br>
+                <h6 style="display: inline-block;">Destination Vertex: </h6>
+                <div style="display: inline-block;"><select name="destv" id="destv"></select></div>
+                <br>
+                <h6 style="display: inline-block;">Time Constraint: </h6>
+                <input style="display: inline-block;" id="tc" type="number">
+                <br>
+                <button id="find" class="btn btn-primary">Find Path</button>
             </div>
         
         </div>

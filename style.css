@@ -18,6 +18,11 @@ canvas{
   overflow-x: auto;
 }
 
+#icon {
+  border-radius: 50%;
+  background-color: rgb(112, 201, 236);
+}
+
 /* div{
   position:absolute;
   z-index:0;
