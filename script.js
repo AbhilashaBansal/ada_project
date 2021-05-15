@@ -32,6 +32,7 @@ add_edge.onclick = function(){
 
     let node4 = document.createElement("input");
     node4.setAttribute("class", "wt");
+    node4.setAttribute("type", "number");
 
     let node5 = document.createElement("button");
     node5.append("Draw");
@@ -269,6 +270,10 @@ find_btn.onclick = function() {
     console.log("Max Research Possible:", optPaths[src_vertex]["res"]);
     console.log("Path:", optPaths[src_vertex]["path"]);
     console.log("Spare Time: ", optPaths[src_vertex]["spt"]);
+
+    if(tot_res<0){
+        alert("No path is possible! Its not possible to reach the destination vertex in given conditions! ");
+    }
 }
 
 
@@ -289,6 +294,11 @@ reset_btn.onclick = function (){
     node_no = 1;
     graph_edges = {};
     graph_vertices = {};
+
+    let sel1 = document.getElementById("srcv");
+    let sel2 = document.getElementById("destv");
+    $(sel1).empty();
+    $(sel2).empty();
 
     ctx.clearRect(0, 0, c.width, c.height);
 }
