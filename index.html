@@ -17,12 +17,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12" style="overflow-x: auto;">
-                <canvas id="myCanvas" width="1800px" height="1000px" style="border: dashed 2px rgb(6, 30, 99);">
+                <canvas id="myCanvas" width="1800px" height="1000px">
                     Your browser does not support the canvas element.
                 </canvas>
             </div>
 
-            <div class="col-sm-3" style="z-index: 5; position: absolute; right: 10px; top: 20px; background-color: ivory;">
+            <div id="sidediv" class="col-sm-3">
                 <h6>RESEARCH POTENTIALS</h6>
                 <ul id="res-pot">
                     <!-- <li>A: 500</li> -->
@@ -35,6 +35,7 @@
                     <img src="./images/plus.jpeg" alt="add an edge" width="25px" id="icon">
                 </div>
 
+                <br>
                 <h6 style="display: inline-block;">Source Vertex: </h6>
                 <div style="display: inline-block;"><select name="srcv" id="srcv"></select></div>
                 <br>
@@ -45,6 +46,8 @@
                 <input style="display: inline-block;" id="tc" type="number">
                 <br>
                 <button id="find" class="btn btn-primary">Find Path</button>
+                <!-- <br> -->
+                <button id="reset" class="btn btn-primary">Reset</button>
             </div>
         
         </div>

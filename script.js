@@ -7,6 +7,7 @@ var ctx = c.getContext("2d");
 let node_no = 1;
 let add_edge = document.getElementById("icon");
 let find_btn = document.getElementById("find");
+let reset_btn = document.getElementById("reset");
 
 
 // add edge function
@@ -36,8 +37,6 @@ add_edge.onclick = function(){
     node5.append("Draw");
     node5.setAttribute("class", "draw_btn");
 
-    // add event listener
-
 
     node.appendChild(node2);
     node.append(" ");
@@ -48,6 +47,7 @@ add_edge.onclick = function(){
     node.appendChild(node5);
     document.getElementById("edge-ul").appendChild(node);
 
+    // add event listener
     node5.onclick = function (e){
         let parent = e.target.parentElement;
         console.log(parent);
@@ -59,6 +59,7 @@ add_edge.onclick = function(){
     }
 }
 
+// draw the edge (event listener)
 function draw_edge(v1, v2, wt, color) {
     let coor1 = vert_coor[v1];
     let coor2 = vert_coor[v2];
@@ -73,6 +74,7 @@ function draw_edge(v1, v2, wt, color) {
     draw_label(wt, coor1, coor2);
 }
 
+// helper fn, to draw a label
 function draw_label(text, v1, v2){
     let dx = parseInt(v2[0] - v1[0]);
     let dy = parseInt(v2[1] - v1[1]);  
@@ -95,7 +97,7 @@ function draw_label(text, v1, v2){
     ctx.fillText(text, 0, 0);
 
     ctx.restore();
-  }
+}
 
 
 // click on canvas
@@ -142,7 +144,6 @@ function getPosition(event){
 
 function drawCoordinates(x,y){	
     var ctx = document.getElementById("myCanvas").getContext("2d");
-
 
     ctx.fillStyle = "rgb(37, 75, 156)"; // Blue color
 
@@ -268,4 +269,26 @@ find_btn.onclick = function() {
     console.log("Max Research Possible:", optPaths[src_vertex]["res"]);
     console.log("Path:", optPaths[src_vertex]["path"]);
     console.log("Spare Time: ", optPaths[src_vertex]["spt"]);
+}
+
+
+// RESET FN
+reset_btn.onclick = function (){
+    let ele = document.getElementById("res-pot");
+    while(ele.firstChild){
+        ele.removeChild(ele.lastChild);
+    }
+
+    let ele_2 = document.getElementById("edge-ul");
+    while(ele_2.firstChild){
+        ele_2.removeChild(ele_2.lastChild);
+    }
+
+    vertices = [];
+    vert_coor = {};
+    node_no = 1;
+    graph_edges = {};
+    graph_vertices = {};
+
+    ctx.clearRect(0, 0, c.width, c.height);
 }
