@@ -1,4 +1,5 @@
 let vertices = [];
+let vert_coor = {};
 
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
@@ -6,6 +7,7 @@ var ctx = c.getContext("2d");
 let node_no = 1;
 let add_edge = document.getElementById("icon");
 let find_btn = document.getElementById("find");
+
 
 // add edge function
 add_edge.onclick = function(){
@@ -29,16 +31,74 @@ add_edge.onclick = function(){
 
     let node4 = document.createElement("input");
     node4.setAttribute("class", "wt");
-    let textnode = document.createTextNode(" "); 
-    let textnode2 = document.createTextNode(" Edge Wt: "); 
+
+    let node5 = document.createElement("button");
+    node5.append("Draw");
+    node5.setAttribute("class", "draw_btn");
+
+    // add event listener
+
+
     node.appendChild(node2);
-    node.appendChild(textnode);
+    node.append(" ");
     node.appendChild(node3);
-    node.appendChild(textnode2);
+    node.append(" Edge Wt: ");
     node.appendChild(node4);
+    node.append(" ");
+    node.appendChild(node5);
     document.getElementById("edge-ul").appendChild(node);
+
+    node5.onclick = function (e){
+        let parent = e.target.parentElement;
+        console.log(parent);
+        let v1 = parent.children[0].value;
+        let v2 = parent.children[1].value;
+        let w3 = parent.children[2].value;
+        console.log(v1, v2, w3);
+        draw_edge(v1, v2, w3, "rgb(20, 89, 146)");
+    }
 }
 
+function draw_edge(v1, v2, wt, color) {
+    let coor1 = vert_coor[v1];
+    let coor2 = vert_coor[v2];
+
+    ctx.beginPath();
+    ctx.moveTo(coor1[0]+10, coor1[1]);
+    ctx.lineTo(coor2[0]-10, coor2[1]);
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = color;
+    ctx.stroke();
+
+    draw_label(wt, coor1, coor2);
+}
+
+function draw_label(text, v1, v2){
+    let dx = parseInt(v2[0] - v1[0]);
+    let dy = parseInt(v2[1] - v1[1]);  
+    console.log(dx, dy);
+
+    let p=v1;
+    let pad = parseFloat(1/2);
+  
+    ctx.save();
+    ctx.translate(parseFloat(p[0] + dx*pad), parseFloat(p[1] + dy*pad));
+    // ctx.rotate(Math.atan2(dy,dx));
+    if(dx<0){
+     ctx.rotate(Math.atan2(dy,dx) - Math.PI);  //to avoid label upside down
+    }
+    else{
+     ctx.rotate(Math.atan2(dy,dx));
+    }
+    ctx.font = '28px arial';
+    ctx.fillStyle = "black"
+    ctx.fillText(text, 0, 0);
+
+    ctx.restore();
+  }
+
+
+// click on canvas
 $("#myCanvas").click(function(e){
     getPosition(e);
 
@@ -66,14 +126,17 @@ $("#myCanvas").click(function(e){
 });
 
 
-// canvas functions
+// CANVAS FUNCTIONS
 var pointSize = 20;
 
 function getPosition(event){
     var rect = c.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
-        
+
+    let cor = [x, y];
+    vert_coor[node_no] = cor;
+
     drawCoordinates(x,y);
 }
 
@@ -94,9 +157,11 @@ function drawCoordinates(x,y){
     ctx.fillText(node_no, x, y);
 }
 
+
 let graph_vertices = {};
 let graph_edges = {};
 
+// HELPER FN FOR FIND PATH
 function traverse(cur_pos, tc, b, visited, optPaths) {
     if(tc<0) return -2;
 
@@ -150,6 +215,8 @@ function traverse(cur_pos, tc, b, visited, optPaths) {
     return optPaths[cur_pos]["res"];
 }
 
+
+// FIND PATH
 find_btn.onclick = function() {
     //process vertices w/ RPs & edges
     // note : Add check condns later
