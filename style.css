@@ -35,6 +35,16 @@ canvas{
   padding: 1%;
 }
 
+#sidediv2 {
+  z-index: 5;
+  position: absolute;
+  left: 10px;
+  top: 100px;
+
+  background-color: ivory;
+  padding: 1%;
+}
+
 #find {
   margin: 5px 0;
 }

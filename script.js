@@ -8,6 +8,8 @@ let node_no = 1;
 let add_edge = document.getElementById("icon");
 let find_btn = document.getElementById("find");
 let reset_btn = document.getElementById("reset");
+let res_div = document.getElementById("sidediv2");
+$(res_div).hide();
 
 
 // add edge function
@@ -56,12 +58,12 @@ add_edge.onclick = function(){
         let v2 = parent.children[1].value;
         let w3 = parent.children[2].value;
         console.log(v1, v2, w3);
-        draw_edge(v1, v2, w3, "rgb(20, 89, 146)");
+        draw_edge(v1, v2, "rgb(20, 89, 146)", w3);
     }
 }
 
 // draw the edge (event listener)
-function draw_edge(v1, v2, wt, color) {
+function draw_edge(v1, v2, color, wt) {
     let coor1 = vert_coor[v1];
     let coor2 = vert_coor[v2];
 
@@ -72,13 +74,42 @@ function draw_edge(v1, v2, wt, color) {
     ctx.strokeStyle = color;
     ctx.stroke();
 
-    draw_label(wt, coor1, coor2);
+    if(wt){
+        draw_label(wt, coor1, coor2);
+    }
+}
+
+function canvas_arrow(v1, v2, color) {
+    let fromx = vert_coor[v1][0];
+    let fromy = vert_coor[v1][1];
+    let tox = vert_coor[v2][0];
+    let toy = vert_coor[v2][1];
+
+    var headlen = 15; // length of head in pixels
+    let arr_x = (fromx+tox)/2 - 20;
+    let arr_y = (fromy + toy)/2;
+    let dx = arr_x - fromx;
+    let dy = arr_y - fromy;
+    let angle = Math.atan2(dy, dx);
+
+    ctx.moveTo(fromx+10, fromy);
+    ctx.lineTo(tox-10, toy);
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = color || "green";
+    
+    
+    ctx.moveTo(arr_x, arr_y);
+    ctx.lineTo(arr_x - headlen * Math.cos(angle - Math.PI / 6), arr_y - headlen * Math.sin(angle - Math.PI / 6));
+    ctx.moveTo(arr_x, arr_y);
+    ctx.lineTo(arr_x - headlen * Math.cos(angle + Math.PI / 6), arr_y - headlen * Math.sin(angle + Math.PI / 6));
+
+    ctx.stroke();
 }
 
 // helper fn, to draw a label
 function draw_label(text, v1, v2){
     let dx = parseInt(v2[0] - v1[0]);
-    let dy = parseInt(v2[1] - v1[1]);  
+    let dy = parseInt(v2[1] - v1[1]-10);  
     console.log(dx, dy);
 
     let p=v1;
@@ -204,8 +235,11 @@ function traverse(cur_pos, tc, b, visited, optPaths) {
 
     }
 
-    optPaths[cur_pos]["res"] = maxRes + graph_vertices[cur_pos];
-    temp_path.unshift(cur_pos);
+    if(maxRes != -1){
+        optPaths[cur_pos]["res"] = maxRes + graph_vertices[cur_pos];
+        temp_path.unshift(cur_pos);
+    }
+    
     optPaths[cur_pos]["path"] = temp_path;
     optPaths[cur_pos]["spt"] = maxST;
     // optPaths[cur_pos]["res"] += graph_vertices[cur_pos];
@@ -274,6 +308,26 @@ find_btn.onclick = function() {
     if(tot_res<0){
         alert("No path is possible! Its not possible to reach the destination vertex in given conditions! ");
     }
+
+    else {
+        let path_list = optPaths[src_vertex]["path"];
+        
+        let res_path = document.getElementById("res-path");
+        res_path.innerHTML = "";
+        let i;
+        for(i=0; i<path_list.length-1; i++){
+            canvas_arrow(path_list[i], path_list[i+1], "white");
+            res_path.append(path_list[i] + " --> ");   
+            // try to add gap
+        }
+        res_path.append(path_list[i]);
+
+        document.getElementById("res-mrp").innerHTML = tot_res;
+        document.getElementById("res-mst").innerHTML = optPaths[src_vertex]["spt"];
+        
+
+        $(res_div).show();
+    }
 }
 
 
@@ -294,6 +348,7 @@ reset_btn.onclick = function (){
     node_no = 1;
     graph_edges = {};
     graph_vertices = {};
+    $(res_div).hide();
 
     let sel1 = document.getElementById("srcv");
     let sel2 = document.getElementById("destv");
