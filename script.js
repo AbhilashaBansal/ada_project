@@ -80,16 +80,23 @@ function draw_edge(v1, v2, color, wt) {
 }
 
 function canvas_arrow(v1, v2, color) {
+    ctx.beginPath();
     let fromx = vert_coor[v1][0];
     let fromy = vert_coor[v1][1];
     let tox = vert_coor[v2][0];
     let toy = vert_coor[v2][1];
 
     var headlen = 15; // length of head in pixels
-    let arr_x = (fromx+tox)/2 - 20;
-    let arr_y = (fromy + toy)/2;
-    let dx = arr_x - fromx;
-    let dy = arr_y - fromy;
+    let arr_x = (fromx+tox)/2;
+    let arr_y = (fromy+toy)/2;
+
+    let dx = tox - fromx;
+    let dy = toy - fromy;
+    // if(arr_x > 40+fromx){
+    //     arr_x -= 20;
+    //     arr_y = (dy/dx)*(arr_x - fromx) + fromy;
+    // }
+    
     let angle = Math.atan2(dy, dx);
 
     ctx.moveTo(fromx+10, fromy);
@@ -114,8 +121,12 @@ function draw_label(text, v1, v2){
 
     let p=v1;
     let pad = parseFloat(1/2);
+    let padding = dx/4;
+  
+    pad = padding / Math.sqrt(dx*dx+dy*dy);
   
     ctx.save();
+    ctx.textAlign = "left";
     ctx.translate(parseFloat(p[0] + dx*pad), parseFloat(p[1] + dy*pad));
     // ctx.rotate(Math.atan2(dy,dx));
     if(dx<0){
