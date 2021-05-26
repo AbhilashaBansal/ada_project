@@ -334,7 +334,7 @@ find_btn.onclick = function() {
         res_path.append(path_list[i]);
 
         document.getElementById("res-mrp").innerHTML = tot_res;
-        document.getElementById("res-mst").innerHTML = optPaths[src_vertex]["spt"];
+        // document.getElementById("res-mst").innerHTML = optPaths[src_vertex]["spt"];
         
 
         $(res_div).show();
